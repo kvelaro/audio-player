@@ -1,4 +1,4 @@
-# 🚀 Soldiers vs Zombies
+# 🚀 Ãudio Player
 
 ```
 npm run build
