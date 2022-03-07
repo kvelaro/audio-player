@@ -3,8 +3,145 @@
     <head>
         <meta charset="utf-8" />
         <title>Audio player</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
     <body>
-        <audio></audio>
+        <div class="container">
+            <div class="player-container">
+                <div class="header">
+                    <div class="search">
+                        <div class="search__input">
+                            <input type="text" placeholder="Search for songs, artists..." />
+                            <i class="fa-solid fa-magnifying-glass fa-1x"></i>
+                        </div>
+                    </div>
+                    <div class="personal-info">
+                        <div class="personal-info__name">Kamil Velaro</div>
+                        <div class="personal-info__avatar">
+                            <img src="./src/images/aditya-saxena-_mIXHvl_wzA-unsplash.jpg" />
+                        </div>
+                    </div>
+                </div>
+                <div class="main">
+                    <div class="playlist">
+                        <h3 class="playlist__section-name">Favorites</h3>
+                        <div class="playlist__item">
+                            <div class="image">
+                                <img src="src/images/aditya-saxena-_mIXHvl_wzA-unsplash.jpg" />
+                            </div>
+                            <div class="info">
+                                <div class="info__name">We love the world</div>
+                                <div class="info__author">Zim hammer</div>
+                            </div>
+                            <div class="duration">04:20</div>
+                        </div>
+                        <div class="playlist__item">
+                            <div class="image">
+                                <img src="src/images/aditya-saxena-_mIXHvl_wzA-unsplash.jpg" />
+                            </div>
+                            <div class="info">
+                                <div class="info__name">We love the world</div>
+                                <div class="info__author">Zim hammer</div>
+                            </div>
+                            <div class="duration">04:20</div>
+                        </div>
+                        <div class="playlist__item">
+                            <div class="image">
+                                <img src="src/images/aditya-saxena-_mIXHvl_wzA-unsplash.jpg" />
+                            </div>
+                            <div class="info">
+                                <div class="info__name">We love the world</div>
+                                <div class="info__author">Zim hammer</div>
+                            </div>
+                            <div class="duration">04:20</div>
+                        </div>
+                    </div>
+                    <div class="rec">
+                        <div class="rec__popular">
+                            <div class="rec__popular-title">
+                                <div class="title">
+                                    <h3>Popular audio</h3>
+                                </div>
+                                <div class="arrow-left">
+                                    <i class="fa-regular fa-angle-left"></i>
+                                </div>
+                                <div class="arrow-right">
+                                    <i class="fa-regular fa-angle-right"></i>
+                                </div>
+                            </div>
+                            <div class="audio__item">
+                                <div class="popular-image">
+                                    <img src="src/images/aditya-saxena-_mIXHvl_wzA-unsplash.jpg" />
+                                </div>
+                                <div class="info">
+                                    <div class="info__name">We love the world</div>
+                                    <div class="info__author">Zim hammer</div>
+                                </div>
+                            </div>
+                            <div class="audio__item">
+                                <div class="popular-image">
+                                    <img src="src/images/aditya-saxena-_mIXHvl_wzA-unsplash.jpg" />
+                                </div>
+                                <div class="info">
+                                    <div class="info__name">We love the world</div>
+                                    <div class="info__author">Zim hammer</div>
+                                </div>
+                            </div>
+                            <div class="audio__item">
+                                <div class="popular-image">
+                                    <img src="src/images/aditya-saxena-_mIXHvl_wzA-unsplash.jpg" />
+                                </div>
+                                <div class="info">
+                                    <div class="info__name">We love the world</div>
+                                    <div class="info__author">Zim hammer</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rec__playlists">
+                            <div class="rec__popular-title">
+                                <div class="title">
+                                    <h3>Playlists</h3>
+                                </div>
+                                <div class="arrow-left">
+                                    <i class="fa-regular fa-angle-left"></i>
+                                </div>
+                                <div class="arrow-right">
+                                    <i class="fa-regular fa-angle-right"></i>
+                                </div>
+                            </div>
+                            <div class="audio__item">
+                                <div class="playlist-image">
+                                    <img src="src/images/aditya-saxena-_mIXHvl_wzA-unsplash.jpg" />
+                                </div>
+                                <div class="info">
+                                    <div class="info__name">We love the world</div>
+                                    <div class="info__author">Zim hammer</div>
+                                </div>
+                            </div>
+                            <div class="audio__item">
+                                <div class="playlist-image">
+                                    <img src="src/images/aditya-saxena-_mIXHvl_wzA-unsplash.jpg" />
+                                </div>
+                                <div class="info">
+                                    <div class="info__name">We love the world</div>
+                                    <div class="info__author">Zim hammer</div>
+                                </div>
+                            </div>
+                            <div class="audio__item">
+                                <div class="playlist-image">
+                                    <img src="src/images/aditya-saxena-_mIXHvl_wzA-unsplash.jpg" />
+                                </div>
+                                <div class="info">
+                                    <div class="info__name">We love the world</div>
+                                    <div class="info__author">Zim hammer</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rec__playlists"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer"></div>
+        </div>
     </body>
 </html>
