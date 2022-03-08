@@ -4,11 +4,14 @@ export default class ProgressBar {
     protected audioContext: AudioContext
     protected samples: number
     protected duration: number
+    protected playedPercentage: number
+    protected audioData: AudioBuffer
     constructor(selector: string, audioContext: AudioContext, samples: number) {
         this.selector = selector
         this.audioContext = audioContext
         this.samples = samples
         this.duration = 0.0
+        this.playedPercentage = 0.0
     }
 
     /**
@@ -20,19 +23,18 @@ export default class ProgressBar {
 
         fetch(url)
             .then(response => response.arrayBuffer())
-            .then(arrayBuffer => this.audioContext.decodeAudioData(arrayBuffer))
+            .then((arrayBuffer) => this.audioContext.decodeAudioData(arrayBuffer))
             .then(audioBuffer => {this.drawProgressBar(this.normalizeData(this.filterData(audioBuffer)))})
 
         let canvasElement = document.querySelector(this.selector + ' canvas')
         canvasElement.addEventListener('click', function(e:PointerEvent) {
             let el = <HTMLCanvasElement>e.currentTarget
             let coords: Array<number> = self.getCursorPosition(el, e)
-            let playedPercentage = coords[0] * 100 / el.width
-            let currentTime = self.duration * playedPercentage / 100
+            self.playedPercentage = coords[0] * 100 / el.width
 
             //@todo -> Not satisfied with this way
             let audioElement = <HTMLAudioElement>document.querySelector(self.selector + ' audio')
-            audioElement.currentTime = currentTime
+            audioElement.currentTime = self.duration * self.playedPercentage / 100
 
         })
     }
@@ -83,6 +85,8 @@ export default class ProgressBar {
         const ctx = canvas.getContext("2d");
         ctx.translate(0, canvas.offsetHeight / 2 + padding); // set Y = 0 to be in the middle of the canvas
 
+        let playedSamples = this.playedPercentage * normalizedData.length / 100
+        let sampleColor = '#fff'
         // draw the line segments
         const width = canvas.offsetWidth / normalizedData.length;
         for (let i = 0; i < normalizedData.length; i++) {
@@ -93,7 +97,13 @@ export default class ProgressBar {
             } else if (height > canvas.offsetHeight / 2) {
                 height = (height > canvas.offsetHeight / 2) ? 1: 0;
             }
-            this.drawLineSegment(ctx, x, height, width, (i + 1) % 2);
+            if(playedSamples > i) {
+                sampleColor = '#FAA30D';
+            }
+            else {
+                sampleColor = '#fff';
+            }
+            this.drawLineSegment(ctx, x, height, width, (i + 1) % 2, sampleColor);
         }
     }
 
@@ -104,10 +114,11 @@ export default class ProgressBar {
      * @param {number} height the desired height of the line segment
      * @param {number} width the desired width of the line segment
      * @param {boolean} isEven whether or not the segmented is even-numbered
+     * @param {string} color text representation of color
      */
-    protected drawLineSegment(ctx: CanvasRenderingContext2D, x: number, height: number, width:number, isEven: number): void {
+    protected drawLineSegment(ctx: CanvasRenderingContext2D, x: number, height: number, width:number, isEven: number, color: string): void {
         ctx.lineWidth = 1; // how thick the line is
-        ctx.strokeStyle = "#fff"; // what color our line is
+        ctx.strokeStyle = color; // what color our line is
         ctx.beginPath();
         height = isEven ? height : -height;
         ctx.moveTo(x, 0);
@@ -122,6 +133,10 @@ export default class ProgressBar {
         const x = event.clientX - rect.left
         const y = event.clientY - rect.top
         return [x, y]
+    }
+
+    protected update() {
+
     }
 
 }
