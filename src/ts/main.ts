@@ -1,5 +1,7 @@
 import mp3sample from "../audios/sample.mp3"
+
 import imgSample from "../images/aditya-saxena-_mIXHvl_wzA-unsplash.jpg"
+import failsaveImage from "../images/music-icon.png"
 
 import AudioPlayer from "./AudioPlayer";
 
@@ -19,9 +21,9 @@ import AudioPlayer from "./AudioPlayer";
 new AudioPlayer('.footer', {
     sourceUrl: mp3sample,
     imageUrl: imgSample,
-    failsaveImage: 'tt',
-    title: 'ttt',
-    singer: 'rrr'
+    failsaveImage: failsaveImage,
+    title: 'Music is my life',
+    singer: 'Dr. Alban'
 })
 
 
