@@ -9,6 +9,7 @@ export default class AudioPlayer {
     protected duration: string
     protected audioCtx: AudioContext
     protected progressBar: ProgressBar
+    protected playing: boolean
 
     constructor(selector: string, audioData?: externalAudioData) {
         this.selector = selector
@@ -16,6 +17,7 @@ export default class AudioPlayer {
         // @ts-ignore
         this.audioCtx = new (window.AudioContext || window.webkitAudioContext)()
 
+        this.playing = false
         if(this.audioData.sourceUrl) {
             this.setAudioElement(this.audioData.sourceUrl)
         }
@@ -43,6 +45,12 @@ export default class AudioPlayer {
             duration += Math.floor(mins).toFixed(0).padStart(2, '0') + ':' + secs.toFixed(0).padStart(2, '0')
             self.duration = duration
         })
+
+        this.audioElement.addEventListener('ended', function() {
+            let playPauseBtn = document.querySelector(self.selector + ' .player .btn-play,.btn-pause')
+            playPauseBtn.classList.remove('btn-pause')
+            playPauseBtn.classList.add('btn-play')
+        })
     }
 
     public draw() {
@@ -65,14 +73,26 @@ export default class AudioPlayer {
         let canvas = document.querySelector(this.selector + ' .player__progressbar canvas')
         canvas.insertAdjacentElement('afterend', this.audioElement)
 
-        let playPauseBtn = document.querySelector(this.selector + ' .player .btn-play-pause')
-        playPauseBtn.addEventListener('click', function() {
+        let playPauseBtn = document.querySelector(this.selector + ' .player .btn-play,btn-pause')
+        playPauseBtn.addEventListener('click', function(e) {
+            let el = <HTMLElement>e.currentTarget
             if(self.audioCtx.state == 'suspended') {
                 self.audioCtx.resume()
             }
             // gainNode.gain.value = 5
             // pannerNode.pan.value = -1
-            self.audioElement.play()
+            if(self.playing) {
+                el.classList.remove('btn-pause')
+                el.classList.add('btn-play')
+                self.audioElement.pause()
+                self.playing = false
+            }
+            else {
+                el.classList.remove('btn-play')
+                el.classList.add('btn-pause')
+                self.audioElement.play()
+                self.playing = true
+            }
         })
     }
 }

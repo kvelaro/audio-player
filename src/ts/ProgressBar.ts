@@ -59,7 +59,7 @@ export default class ProgressBar {
     protected drawProgressBar(normalizedData: Array<number>) {
         // set up the canvas
         const canvas = <HTMLCanvasElement>document.querySelector(this.selector + " canvas");
-        canvas.width = 1200;
+        canvas.width = 900;
         canvas.height = 75;
         const padding = 0;
         const ctx = canvas.getContext("2d");

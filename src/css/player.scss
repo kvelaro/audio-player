@@ -1,0 +1,77 @@
+.player {
+  display: flex;
+  align-items: center;
+  padding: 30px;
+  .artist {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &__img {
+      padding: 10px;
+      img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+      }
+    }
+    &__info {
+      display: flex;
+      flex-direction: column;
+      color: #fff;
+      &-song-title {
+
+      }
+      &-name {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 15px;
+      }
+    }
+  }
+  &__controls {
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    .btn {
+      background-color: rgba(100, 100, 100, 0.5);
+      border-radius: 50px;
+      margin: 5px;
+
+      i {
+        color: #fff;
+      }
+    }
+  }
+  &__progressbar {
+
+  }
+  &__duration {
+
+  }
+  &__volume {
+
+  }
+  audio {
+
+  }
+}
+div[class^="btn-"] {
+  width: 40px;
+  height: 40px;
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
+  margin: 5px;
+}
+.btn-prev {
+  background: url("../images/004-fast-forward.png") no-repeat;
+  transform: rotate(180deg);
+}
+.btn-play {
+  background: url("../images/001-arrow.png") no-repeat;
+}
+.btn-pause {
+  background: url("../images/002-pause.png") no-repeat;
+}
+.btn-next {
+  background: url("../images/004-fast-forward.png") no-repeat;
+}
