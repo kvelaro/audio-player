@@ -1,5 +1,6 @@
 
 import {externalAudioData} from "./types/externalAudioData";
+import ProgressBar from "./ProgressBar";
 
 export default class AudioPlayer {
     protected selector: string
@@ -7,6 +8,7 @@ export default class AudioPlayer {
     protected audioElement: HTMLAudioElement
     protected duration: string
     protected audioCtx: AudioContext
+    protected progressBar: ProgressBar
 
     constructor(selector: string, audioData?: externalAudioData) {
         this.selector = selector
@@ -17,6 +19,7 @@ export default class AudioPlayer {
         if(this.audioData.sourceUrl) {
             this.setAudioElement(this.audioData.sourceUrl)
         }
+        this.progressBar = new ProgressBar(this.selector, this.audioCtx, 300)
         this.draw()
     }
 
@@ -56,6 +59,8 @@ export default class AudioPlayer {
                 duration: this.duration
             }
         }))
+
+        this.progressBar.draw(this.audioData.sourceUrl)
 
         let canvas = document.querySelector(this.selector + ' .player__progressbar canvas')
         canvas.insertAdjacentElement('afterend', this.audioElement)

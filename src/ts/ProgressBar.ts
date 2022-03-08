@@ -1,8 +1,10 @@
 /* https://css-tricks.com/making-an-audio-waveform-visualizer-with-vanilla-javascript/ */
 export default class ProgressBar {
+    protected selector: string
     protected audioContext: AudioContext
     protected samples: number
-    constructor(audioContext: AudioContext, samples: number) {
+    constructor(selector: string, audioContext: AudioContext, samples: number) {
+        this.selector = selector
         this.audioContext = audioContext
         this.samples = samples
     }
@@ -56,12 +58,11 @@ export default class ProgressBar {
      */
     protected drawProgressBar(normalizedData: Array<number>) {
         // set up the canvas
-        const canvas = document.querySelector("canvas");
+        const canvas = <HTMLCanvasElement>document.querySelector(this.selector + " canvas");
+        canvas.width = 1200;
+        canvas.height = 75;
         const padding = 0;
-        canvas.width = canvas.offsetWidth;
-        canvas.height = (canvas.offsetHeight + padding * 2);
         const ctx = canvas.getContext("2d");
-
         ctx.translate(0, canvas.offsetHeight / 2 + padding); // set Y = 0 to be in the middle of the canvas
 
         // draw the line segments

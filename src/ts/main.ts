@@ -14,9 +14,6 @@ import AudioPlayer from "./AudioPlayer";
 //track.connect(gainNode).connect(pannerNode).connect(audioCtx.destination)
 
 
-// let canvas = document.querySelector('canvas')
-// canvas.width = 900;
-//canvas.height = 75;
 
 new AudioPlayer('.footer', {
     sourceUrl: mp3sample,
