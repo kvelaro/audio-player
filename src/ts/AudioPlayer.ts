@@ -21,29 +21,47 @@ export default class AudioPlayer {
         if(this.audioData.sourceUrl) {
             this.setAudioElement(this.audioData.sourceUrl)
         }
+        console.log(this.duration)
         this.progressBar = new ProgressBar(this.selector, this.audioCtx, 300)
         this.draw()
     }
 
-    protected async setAudioElement(audioUrl:string) {
+    protected timeToDisplay(seconds :number) {
+        let hours = Math.floor(seconds / 3600)
+        let mins = (seconds / 60)
+        let secs = (seconds)
+
+        let duration = ''
+        if (hours > 0) {
+            duration += Math.floor(hours).toFixed(0).padStart(2, '0')
+        }
+
+        if (duration.length > 0) {
+            duration += ':'
+        }
+        duration += Math.floor(mins).toFixed(0).padStart(2, '0') + ':' + secs.toFixed(0).padStart(2, '0')
+        return duration
+    }
+
+    protected setAudioElement(audioUrl:string) {
         let self = this
         this.audioElement = new Audio(audioUrl)
         this.audioElement.addEventListener('loadedmetadata', function(e) {
             let el = <HTMLAudioElement>e.currentTarget
-            let hours = Math.floor(el.duration / 3600)
-            let mins = (el.duration / 60)
-            let secs = (el.duration)
 
-            let duration = ''
-            if (hours > 0) {
-                duration += Math.floor(hours).toFixed(0).padStart(2, '0')
-            }
+            let playerDurationElement = document.querySelector(self.selector + ' .player .player__duration')
 
-            if (duration.length > 0) {
-                duration += ':'
-            }
-            duration += Math.floor(mins).toFixed(0).padStart(2, '0') + ':' + secs.toFixed(0).padStart(2, '0')
-            self.duration = duration
+            let currentTimeElement = playerDurationElement.querySelector('.current-time')
+            let currentTime = (el.duration > 3600) ? '00:00:00' : '00:00'
+            currentTimeElement.innerHTML = currentTime
+
+            let durationElement = playerDurationElement.querySelector('.duration')
+            durationElement.innerHTML = self.timeToDisplay(el.duration)
+        })
+
+        this.audioElement.addEventListener('timeupdate', function() {
+            let currentTimeElement = document.querySelector(self.selector + ' .player .player__duration .current-time')
+            currentTimeElement.innerHTML = self.timeToDisplay(self.audioElement.currentTime)
         })
 
         this.audioElement.addEventListener('ended', function() {
