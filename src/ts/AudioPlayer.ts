@@ -1,4 +1,4 @@
-import AudioPlayerControls from "./AudioPlayerControls";
+
 import {externalAudioData} from "./types/externalAudioData";
 
 export default class AudioPlayer {
@@ -7,7 +7,6 @@ export default class AudioPlayer {
     protected audioElement: HTMLAudioElement
     protected duration: string
     protected audioCtx: AudioContext
-    protected controls: AudioPlayerControls
 
     constructor(selector: string, audioData?: externalAudioData) {
         this.selector = selector
@@ -45,8 +44,8 @@ export default class AudioPlayer {
 
     public draw() {
         let self = this
-        let playerTemplate = require('../views/player.handlebars')
 
+        let playerTemplate = require('../views/player.handlebars')
         document.querySelector(this.selector).insertAdjacentHTML('afterbegin', playerTemplate({
             audio: {
                 element: self.audioElement,

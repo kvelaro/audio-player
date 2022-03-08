@@ -2,10 +2,8 @@
 export default class ProgressBar {
     protected audioContext: AudioContext
     protected samples: number
-    constructor(samples: number) {
-        // @ts-ignore
-        window.AudioContext = window.AudioContext || window.webkitAudioContext;
-        this.audioContext = new AudioContext()
+    constructor(audioContext: AudioContext, samples: number) {
+        this.audioContext = audioContext
         this.samples = samples
     }
 
@@ -13,11 +11,11 @@ export default class ProgressBar {
      * Retrieves audio from an external source, the initializes the drawing function
      * @param {String} url the url of the audio we'd like to fetch
      */
-    public drawAudio(url: string): void {
+    public draw(url: string): void {
         fetch(url)
             .then(response => response.arrayBuffer())
             .then(arrayBuffer => this.audioContext.decodeAudioData(arrayBuffer))
-            .then(audioBuffer => {this.draw(this.normalizeData(this.filterData(audioBuffer)))})
+            .then(audioBuffer => {this.drawProgressBar(this.normalizeData(this.filterData(audioBuffer)))})
     }
 
     /**
@@ -56,7 +54,7 @@ export default class ProgressBar {
      * @param {Array} normalizedData The filtered array returned from filterData()
      * @returns {Array} a normalized array of data
      */
-    protected draw(normalizedData: Array<number>) {
+    protected drawProgressBar(normalizedData: Array<number>) {
         // set up the canvas
         const canvas = document.querySelector("canvas");
         const padding = 0;
@@ -95,7 +93,7 @@ export default class ProgressBar {
         height = isEven ? height : -height;
         ctx.moveTo(x, 0);
         ctx.lineTo(x, height);
-        ctx.arc(x + width / 2, height, width / 2, Math.PI, 0, (isEven) ? true : false);
+        ctx.arc(x + width / 2, height, width / 2, Math.PI, 0, !!(isEven));
         ctx.lineTo(x + width, 0);
         ctx.stroke();
     }
