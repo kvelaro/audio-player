@@ -1,4 +1,3 @@
-
 import {externalAudioData} from "./types/externalAudioData";
 import ProgressBar from "./ProgressBar";
 
@@ -21,7 +20,6 @@ export default class AudioPlayer {
         if(this.audioData.sourceUrl) {
             this.setAudioElement(this.audioData.sourceUrl)
         }
-        console.log(this.duration)
         this.progressBar = new ProgressBar(this.selector, this.audioCtx, 300)
         this.draw()
     }
@@ -52,8 +50,7 @@ export default class AudioPlayer {
             let playerDurationElement = document.querySelector(self.selector + ' .player .player__duration')
 
             let currentTimeElement = playerDurationElement.querySelector('.current-time')
-            let currentTime = (el.duration > 3600) ? '00:00:00' : '00:00'
-            currentTimeElement.innerHTML = currentTime
+            currentTimeElement.innerHTML = (el.duration > 3600) ? '00:00:00' : '00:00'
 
             let durationElement = playerDurationElement.querySelector('.duration')
             durationElement.innerHTML = self.timeToDisplay(el.duration)

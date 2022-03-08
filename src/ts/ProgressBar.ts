@@ -3,10 +3,12 @@ export default class ProgressBar {
     protected selector: string
     protected audioContext: AudioContext
     protected samples: number
+    protected duration: number
     constructor(selector: string, audioContext: AudioContext, samples: number) {
         this.selector = selector
         this.audioContext = audioContext
         this.samples = samples
+        this.duration = 0.0
     }
 
     /**
@@ -14,10 +16,25 @@ export default class ProgressBar {
      * @param {String} url the url of the audio we'd like to fetch
      */
     public draw(url: string): void {
+        let self = this
+
         fetch(url)
             .then(response => response.arrayBuffer())
             .then(arrayBuffer => this.audioContext.decodeAudioData(arrayBuffer))
             .then(audioBuffer => {this.drawProgressBar(this.normalizeData(this.filterData(audioBuffer)))})
+
+        let canvasElement = document.querySelector(this.selector + ' canvas')
+        canvasElement.addEventListener('click', function(e:PointerEvent) {
+            let el = <HTMLCanvasElement>e.currentTarget
+            let coords: Array<number> = self.getCursorPosition(el, e)
+            let playedPercentage = coords[0] * 100 / el.width
+            let currentTime = self.duration * playedPercentage / 100
+
+            //@todo -> Not satisfied with this way
+            let audioElement = <HTMLAudioElement>document.querySelector(self.selector + ' audio')
+            audioElement.currentTime = currentTime
+
+        })
     }
 
     /**
@@ -26,6 +43,7 @@ export default class ProgressBar {
      * @returns {Array} an array of floating point numbers
      */
     protected filterData(audioBuffer:AudioBuffer): Array<number> {
+        this.duration = audioBuffer.duration
         const rawData = audioBuffer.getChannelData(0); // We only need to work with one channel of data
         const samples = this.samples; // Number of samples we want to have in our final data set
         const blockSize = Math.floor(rawData.length / samples); // the number of samples in each subdivision
@@ -98,17 +116,12 @@ export default class ProgressBar {
         ctx.lineTo(x + width, 0);
         ctx.stroke();
     }
+
+    protected getCursorPosition(canvas: HTMLCanvasElement, event: MouseEvent) {
+        const rect = canvas.getBoundingClientRect()
+        const x = event.clientX - rect.left
+        const y = event.clientY - rect.top
+        return [x, y]
+    }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-    //
-    // drawAudio('https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/shoptalk-clip.mp3');
