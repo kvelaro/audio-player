@@ -76,3 +76,15 @@ div[class^="btn-"] {
 .btn-next {
   background: url("../images/004-fast-forward.png") no-repeat;
 }
+.btn-volume {
+  background: url("../images/005-audio.png") no-repeat;
+  .range-wrapper {
+    position: relative;
+    input {
+      position: absolute;
+      transform: rotate(-90deg);
+      left: -70px;
+      top: -90px;
+    }
+  }
+}

@@ -13,9 +13,5 @@ export default class AudioFile {
 
     }
 
-    // let track = audioCtx.createMediaElementSource(audioElement)
-    //
-    // let gainNode = audioCtx.createGain()
-    //
-    // let pannerNode = audioCtx.createStereoPanner()
+
 }

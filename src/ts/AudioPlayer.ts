@@ -88,6 +88,28 @@ export default class AudioPlayer {
         let canvas = document.querySelector(this.selector + ' .player__progressbar canvas')
         canvas.insertAdjacentElement('afterend', this.audioElement)
 
+        let track = this.audioCtx.createMediaElementSource(this.audioElement)
+        track.connect(this.audioCtx.destination)
+
+        let volumeElement = document.querySelector(this.selector + ' .btn-volume')
+        volumeElement.addEventListener('click', function(e) {
+            let el = <HTMLElement>e.currentTarget
+            el.children[0].classList.remove('hidden')
+        })
+
+        let volumeRangeElement = document.querySelector(this.selector + ' .btn-volume .range-wrapper input')
+        let defaultVolumeValue = 0.7
+        volumeRangeElement.setAttribute('value', defaultVolumeValue.toString(10))
+        self.audioElement.volume = defaultVolumeValue
+
+
+        volumeRangeElement.addEventListener('change', function(e) {
+            let el = <HTMLInputElement>e.currentTarget
+            let rangeCurrentValue = parseFloat(el.value)
+
+            self.audioElement.volume = rangeCurrentValue
+        })
+
         let playPauseBtn = document.querySelector(this.selector + ' .player .btn-play,btn-pause')
         playPauseBtn.addEventListener('click', function(e) {
             let el = <HTMLElement>e.currentTarget
@@ -107,6 +129,15 @@ export default class AudioPlayer {
                 el.classList.add('btn-pause')
                 self.audioElement.play()
                 self.playing = true
+            }
+        })
+
+        document.addEventListener('click', function(e) {
+            //@todo for now
+            let el = <HTMLElement>e.target
+
+            if(!el.classList.contains('btn-volume') && el.getAttribute('type') != 'range') {
+                document.querySelector(self.selector + ' .range-wrapper').classList.add('hidden')
             }
         })
     }
