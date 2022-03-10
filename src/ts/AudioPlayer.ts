@@ -9,13 +9,13 @@ export default class AudioPlayer {
     protected audioCtx: AudioContext
     protected progressBar: ProgressBar
     protected playing: boolean
-
+    protected prev: number;
     constructor(selector: string, audioData?: externalAudioData) {
         this.selector = selector
         this.audioData = audioData
         // @ts-ignore
         this.audioCtx = new (window.AudioContext || window.webkitAudioContext)()
-
+        this.prev = 0
         this.playing = false
         if(this.audioData.sourceUrl) {
             this.setAudioElement(this.audioData.sourceUrl)
@@ -44,6 +44,7 @@ export default class AudioPlayer {
     protected setAudioElement(audioUrl:string) {
         let self = this
         this.audioElement = new Audio(audioUrl)
+        this.audioElement.crossOrigin = "anonymous";
         this.audioElement.addEventListener('loadedmetadata', function(e) {
             let el = <HTMLAudioElement>e.currentTarget
 
@@ -102,7 +103,6 @@ export default class AudioPlayer {
         volumeRangeElement.setAttribute('value', defaultVolumeValue.toString(10))
         self.audioElement.volume = defaultVolumeValue
 
-
         volumeRangeElement.addEventListener('change', function(e) {
             let el = <HTMLInputElement>e.currentTarget
             let rangeCurrentValue = parseFloat(el.value)
@@ -113,11 +113,10 @@ export default class AudioPlayer {
         let playPauseBtn = document.querySelector(this.selector + ' .player .btn-play,btn-pause')
         playPauseBtn.addEventListener('click', function(e) {
             let el = <HTMLElement>e.currentTarget
+
             if(self.audioCtx.state == 'suspended') {
                 self.audioCtx.resume()
             }
-            // gainNode.gain.value = 5
-            // pannerNode.pan.value = -1
             if(self.playing) {
                 el.classList.remove('btn-pause')
                 el.classList.add('btn-play')
@@ -129,6 +128,7 @@ export default class AudioPlayer {
                 el.classList.add('btn-pause')
                 self.audioElement.play()
                 self.playing = true
+                self.playEffect()
             }
         })
 
@@ -141,4 +141,20 @@ export default class AudioPlayer {
             }
         })
     }
+
+    protected playEffect() {
+        const FPS = 1000 / 30
+        let now = (new Date()).getTime()
+        if(now - this.prev > FPS) {
+            this.prev = now - (this.prev % FPS)
+            //update canvas data
+            this.progressBar.update()
+        }
+        if(this.playing) {
+            requestAnimationFrame(() => this.playEffect())
+        }
+    }
 }
+
+
+

@@ -5,7 +5,7 @@ export default class ProgressBar {
     protected samples: number
     protected duration: number
     protected playedPercentage: number
-    protected audioData: AudioBuffer
+    protected audioBuffer: AudioBuffer
     constructor(selector: string, audioContext: AudioContext, samples: number) {
         this.selector = selector
         this.audioContext = audioContext
@@ -19,13 +19,13 @@ export default class ProgressBar {
      * @param {String} url the url of the audio we'd like to fetch
      */
     public draw(url: string): void {
-        let self = this
 
         fetch(url)
             .then(response => response.arrayBuffer())
             .then((arrayBuffer) => this.audioContext.decodeAudioData(arrayBuffer))
             .then(audioBuffer => {this.drawProgressBar(this.normalizeData(this.filterData(audioBuffer)))})
 
+        let self = this
         let canvasElement = document.querySelector(this.selector + ' canvas')
         canvasElement.addEventListener('click', function(e:PointerEvent) {
             let el = <HTMLCanvasElement>e.currentTarget
@@ -35,7 +35,6 @@ export default class ProgressBar {
             //@todo -> Not satisfied with this way
             let audioElement = <HTMLAudioElement>document.querySelector(self.selector + ' audio')
             audioElement.currentTime = self.duration * self.playedPercentage / 100
-
         })
     }
 
@@ -45,6 +44,7 @@ export default class ProgressBar {
      * @returns {Array} an array of floating point numbers
      */
     protected filterData(audioBuffer:AudioBuffer): Array<number> {
+        this.audioBuffer = audioBuffer
         this.duration = audioBuffer.duration
         const rawData = audioBuffer.getChannelData(0); // We only need to work with one channel of data
         const samples = this.samples; // Number of samples we want to have in our final data set
@@ -83,8 +83,8 @@ export default class ProgressBar {
         canvas.height = 75;
         const padding = 0;
         const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.translate(0, canvas.offsetHeight / 2 + padding); // set Y = 0 to be in the middle of the canvas
-
         let playedSamples = this.playedPercentage * normalizedData.length / 100
         let sampleColor = '#fff'
         // draw the line segments
@@ -135,8 +135,11 @@ export default class ProgressBar {
         return [x, y]
     }
 
-    protected update() {
-
+    public update() {
+        //@todo -> Not satisfied with this way
+        let audioElement = <HTMLAudioElement>document.querySelector(this.selector + ' audio')
+        this.playedPercentage = audioElement.currentTime * 100 / this.duration
+        this.drawProgressBar(this.normalizeData(this.filterData(this.audioBuffer)))
     }
 
 }

@@ -14,4 +14,5 @@ new AudioPlayer('.footer', {
 
 
 
-//progressBar.drawAudio('https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/shoptalk-clip.mp3')
+//https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/shoptalk-clip.mp3
+//https://audio-samples.github.io/samples/mp3/blizzard_unconditional/sample-0.mp3
