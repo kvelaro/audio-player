@@ -35,6 +35,7 @@ export default class ProgressBar {
             //@todo -> Not satisfied with this way
             let audioElement = <HTMLAudioElement>document.querySelector(self.selector + ' audio')
             audioElement.currentTime = self.duration * self.playedPercentage / 100
+            self.update()
         })
     }
 
